@@ -1,0 +1,67 @@
+/* Estilização Global (Seletor de Tag)
+Aplique uma base visual para todo o documento. 
+O seletor de tag afeta todos os elementos do tipo especificado
+na página. */
+
+body {
+  background-color: #f4f4f4;
+  font-family: Arial, sans-serif;
+}
+
+/* Identificação Única (Seletor de ID)
+Utilize o ID para estilizar um elemento que ocorre 
+apenas uma vez na página. IDs possuem alta especificidade.*/
+
+header {
+  background-color: black;
+  color: #f4f4f4;
+  padding: 20p;
+}
+
+/*Padrões Repetíveis (Seletor de Classe)
+Classes são ideais para componentes que se repetem,
+como cartões de conteúdo. */
+
+.card {
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  width: 200px;
+}
+
+/*Relação de Hierarquia (Seletor Descendente)
+Estilize elementos com base na sua posição dentro de outros elementos. */
+
+p span {
+  font-weight: bold;
+  color: blue;
+}
+
+/* Otimização de Código (Seletor de Agrupamento)
+Aplique o mesmo estilo a múltiplos seletores simultaneamente 
+para evitar repetição de código.*/
+
+h1, h2 {
+  color: #2c3e50;
+}
+
+/*Especialização (Seletor de Classe Específica)
+Aprenda a diferenciar um elemento que possui múltiplas classes.*/
+.card.destaque{
+  border: 3px solid gold;
+  transform: scale(1.05);
+}
+
+/*Estados do Usuário (Pseudo-classe :hover)
+Adicione interatividade baseada na ação do ponteiro do mouse.*/
+
+button:hover{
+  background-color: #27ae60;
+  cursor: pointer;
+}
+
+/* Seleção Estrutural (Pseudo-classe :nth-child)
+Selecione um elemento com base em sua posição exata na lista de irmãos. */
+
+nav ul li:nth-child(2){
+  text-transform: uppercase;
+}
