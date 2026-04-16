@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<!--
+  =====================================================================
+  O QUE É O <html>?
+  É o elemento RAIZ — contém tudo na página.
+  lang="pt-BR" diz ao navegador que o idioma é português do Brasil.
+  Isso ajuda na acessibilidade (leitores de tela) e SEO.
+  =====================================================================
+-->
+
+<head>
+  <!--
+    =====================================================================
+    O QUE É O <head>?
+    É o cabeçalho INVISÍVEL da página — só o navegador lê.
+    Aqui ficam: configurações, estilos, fontes e metadados.
+    =====================================================================
+  -->
+
+  <meta charset="UTF-8">
+  <!-- Define que usamos caracteres UTF-8 → suporte a acentos e emojis -->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--
+    RESPONSIVIDADE: essa meta tag é ESSENCIAL para celular e tablet.
+    width=device-width → a largura da página = largura da tela do aparelho
+    initial-scale=1.0  → sem zoom inicial
+    SEM isso, celulares mostram a versão desktop encolhida. Nunca esqueça!
+  -->
+
+  <title>Blog da Victoria Cristina ✦</title>
+  <!-- O texto que aparece na aba do navegador -->
+
+  <!--
+    =====================================================================
+    GOOGLE FONTS — Como usar fontes externas
+    São fontes gratuitas do Google carregadas da internet.
+    O <link> puxa o arquivo CSS da fonte antes da sua página carregar.
+    Depois você usa o nome da fonte no CSS com font-family.
+
+    Usamos aqui:
+    • "Cinzel" → fonte serifada dramática, para títulos (estilo épico/anime)
+    • "DM Sans" → fonte limpa e moderna, para texto do corpo
+    =====================================================================
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap"
+    rel="stylesheet">
+
+  <style>
+    /*
+      ===================================================================
+      O QUE É CSS?
+      CSS = Cascading Style Sheets (Folha de Estilos em Cascata).
+      Enquanto HTML define A ESTRUTURA, o CSS define A APARÊNCIA.
+      Ele "decora" os elementos HTML com cores, fontes, espaçamento, etc.
+
+      SINTAXE BÁSICA:
+        seletor {
+          propriedade: valor;
+        }
+
+      Exemplo:
+        h1 {
+          color: red;   ← muda a cor do texto do h1 para vermelho
+        }
+      ===================================================================
+    */
+
+
+    /*
+      -------------------------------------------------------------------
+      VARIÁVEIS CSS (:root)
+      :root = seleciona o elemento mais acima da árvore (o <html>).
+      Variáveis começam com -- e são chamadas com var(--nome).
+
+      POR QUE USAR?
+      Se você quer mudar a cor principal do site, muda só UM lugar,
+      não precisa procurar em todo o CSS. Ótimo para manter consistência!
+      -------------------------------------------------------------------
+    */
+    :root {
+      --bg-deep:      #0b0b13;   /* Fundo mais escuro da página */
+      --bg-card:      #13131f;   /* Fundo dos cartões/cards */
+      --bg-card-2:    #1a1a2e;   /* Fundo levemente mais claro */
+      --accent-green: #2ecb82;   /* Verde água — cor principal */
+      --accent-violet:#b06ef3;   /* Roxo suave — cor secundária */
+      --accent-pink:  #f07fc0;   /* Rosa — cor de destaque */
+      --text-main:    #e8e8f0;   /* Cor do texto principal */
+      --text-muted:   #7c7c9e;   /* Cor do texto secundário/apagado */
+      --border:       rgba(46, 203, 130, 0.15); /* Borda translúcida verde */
+
+      --font-title: 'Cinzel', serif;     /* Fonte para títulos */
+      --font-body:  'DM Sans', sans-serif; /* Fonte para corpo */
+    }
+
+
+    /*
+      -------------------------------------------------------------------
+      RESET & BOX-SIZING
+      Por padrão, cada navegador tem estilos próprios que bagunçam o layout.
+      O "reset" zera esses estilos para ter controle total.
+
+      box-sizing: border-box → Faz com que padding e border sejam
+      incluídos no tamanho total do elemento. Muito mais fácil de calcular!
+      -------------------------------------------------------------------
+    */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+
+    /*
+      -------------------------------------------------------------------
+      SCROLL SUAVE
+      scroll-behavior: smooth → quando clicar em links âncora (#secao),
+      a página rola suavemente em vez de pular.
+      -------------------------------------------------------------------
+    */
+    html {
+      scroll-behavior: smooth;
+    }
+
+
+    /*
+      -------------------------------------------------------------------
+      BODY — configurações base do corpo da página
+      font-family → define a fonte padrão de TUDO
+      background  → cor de fundo
+      color       → cor padrão do texto
+      line-height → espaço entre as linhas de texto (1.6 = 160% da fonte)
+      -------------------------------------------------------------------
+    */
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg-deep);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden; /* Esconde scroll horizontal indesejado */
+    }
+
+
+    /*
+      -------------------------------------------------------------------
+      O QUE É UMA DIV?
+      <div> = Division (Divisão). É uma caixa invisível genérica.
+      Usamos divs para AGRUPAR elementos e organizar o layout.
+
+      Por si só a div não faz nada visualmente.
+      O poder dela vem do CSS que aplicamos a ela.
+      -------------------------------------------------------------------
+    */
+
+
+    /* ─── NOISE OVERLAY (textura de ruído) ─────────────────────────── */
+    /*
+      position: fixed → fica fixo na tela mesmo ao rolar
+      inset: 0 → equivale a top:0; right:0; bottom:0; left:0
+      pointer-events: none → deixa clicar "através" dela
+      Isso cria uma textura sutil sobre TUDO para dar profundidade.
+    */
+    .noise-overlay {
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.4;
+    }
+
+
+    /* ─── GLOW DE FUNDO (efeito de luz colorida no fundo) ───────────── */
+    /*
+      Esses elementos são divs decorativas, absolutamente posicionadas,
+      com border-radius: 50% (= círculo), blur e opacidade baixa.
+      Criam a sensação de luz ambiente.
+    */
+    .bg-glow {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .bg-glow-1 {
+      width: 500px; height: 500px;
+      background: var(--accent-violet);
+      top: -100px; left: -100px;
+      opacity: 0.06;
+    }
+    .bg-glow-2 {
+      width: 400px; height: 400px;
+      background: var(--accent-green);
+      bottom: 10%; right: -80px;
+      opacity: 0.07;
+    }
+
+
+    /* ─── CONTAINER PRINCIPAL ──────────────────────────────────────── */
+    /*
+      .container = div que centraliza o conteúdo na tela.
+      max-width: 860px → nunca fica maior que 860px
+      margin: 0 auto → centraliza horizontalmente (auto nas laterais)
+      padding: 0 1.5rem → espaçamento interno nas laterais (para celular)
+      position: relative; z-index: 1 → fica na frente das glows do fundo
+    */
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+
+    /* ─── HEADER (Cabeçalho principal da página) ────────────────────── */
+    /*
+      O <header> é um elemento semântico (HTML5) — tem significado.
+      Diz que aquele bloco é o cabeçalho. Igual a uma div, mas mais correto.
+      padding: 5rem 0 3rem → espaçamento interno: 5rem em cima, 3rem embaixo
+      text-align: center → centraliza todo conteúdo filho
+    */
+    .site-header {
+      padding: 5rem 0 3rem;
+      text-align: center;
+      position: relative;
+    }
+
+    /* Linha decorativa acima do subtítulo */
+    .site-header::before {
+      content: '✦ ✦ ✦';
+      display: block;
+      color: var(--accent-green);
+      font-size: 0.75rem;
+      letter-spacing: 0.5rem;
+      margin-bottom: 1.5rem;
+      opacity: 0.7;
+    }
+
+    .site-header h1 {
+      font-family: var(--font-title);
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      /*
+        clamp(mínimo, preferido, máximo) → tamanho RESPONSIVO!
+        O texto cresce com a tela, mas nunca sai desse intervalo.
+        6vw = 6% da largura da viewport (tela).
+      */
+      font-weight: 900;
+      line-height: 1.1;
+      color: var(--text-main);
+    }
+
+    .site-header h1 .highlight {
+      /*
+        background-clip: text + color: transparent → o gradiente
+        aparece DENTRO do texto, não atrás dele. Efeito moderno!
+      */
+      background: linear-gradient(135deg, var(--accent-green), var(--accent-violet));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .site-header .tagline {
+      margin-top: 1rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      font-style: italic;
+      letter-spacing: 0.05em;
+    }
+
+
+    /* ─── FOTO DE PERFIL ────────────────────────────────────────────── */
+    .avatar-wrap {
+      margin: 2rem auto 0;
+      width: 150px;
+      height: 150px;
+      position: relative;
+    }
+
+    /*
+      O anel animado ao redor da foto.
+      @keyframes define uma ANIMAÇÃO CSS. rotate vai de 0 a 360 graus.
+      animation: nome duração tipo loop
+    */
+    .avatar-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      background: conic-gradient(
+        var(--accent-green),
+        var(--accent-violet),
+        var(--accent-pink),
+        var(--accent-green)
+      );
+      animation: spin 4s linear infinite;
+      z-index: 0;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .avatar-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;   /* Imagem cobre o espaço sem distorcer */
+      border-radius: 50%;  /* Torna a imagem circular */
+      position: relative;
+      z-index: 1;
+      border: 4px solid var(--bg-deep);
+    }
+
+    /* Placeholder quando não há imagem */
+    .avatar-placeholder {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--bg-card-2), var(--bg-card));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      position: relative;
+      z-index: 1;
+      border: 4px solid var(--bg-deep);
+    }
+
+
+    /* ─── AUDIO PLAYER CUSTOMIZADO ──────────────────────────────────── */
+    .audio-section {
+      margin: 2.5rem 0;
+      display: flex;
+      justify-content: center; /* Centraliza horizontalmente */
+      align-items: center;     /* Centraliza verticalmente */
+    }
+
+    .audio-player-wrap {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 2rem;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem; /* Espaço entre os itens filhos */
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .audio-player-wrap audio {
+      height: 32px;
+      filter: invert(1) hue-rotate(180deg); /* Inverte cores do player nativo */
+      opacity: 0.7;
+    }
+
+    .audio-icon {
+      font-size: 1.2rem;
+      color: var(--accent-green);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(0.9); }
+    }
+
+
+    /* ─── SEÇÕES (sections) ─────────────────────────────────────────── */
+    /*
+      <section> é outro elemento semântico HTML5.
+      Indica um bloco temático da página.
+      margin-bottom: 3rem → espaço abaixo de cada seção
+    */
+    .section {
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      font-family: var(--font-title);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--accent-green);
+      text-transform: uppercase;  /* Deixa em maiúsculas */
+      letter-spacing: 0.2em;      /* Espaço entre letras */
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    /* Linha decorativa depois do título */
+    .section-title::after {
+      content: '';
+      flex: 1; /* Ocupa todo o espaço restante */
+      height: 1px;
+      background: var(--border);
+    }
+
+
+    /* ─── CARDS ─────────────────────────────────────────────────────── */
+    /*
+      Um CARD é um bloco visual com fundo, borda e sombra.
+      É um dos padrões de layout mais usados na web.
+
+      transition: all 0.3s ease → animação suave quando muda de estado
+      (como o hover abaixo)
+    */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;   /* Cantos arredondados */
+      padding: 1.5rem;
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /*
+      :hover → aplica estilo quando o mouse está sobre o elemento
+    */
+    .card:hover {
+      transform: translateY(-4px); /* Sobe 4px ao passar o mouse */
+      border-color: rgba(46, 203, 130, 0.35);
+      box-shadow: 0 20px 60px rgba(46, 203, 130, 0.08);
+    }
+
+
+    /* ─── GRID DE CARDS ─────────────────────────────────────────────── */
+    /*
+      CSS GRID = sistema de layout em grade 2D.
+      display: grid → ativa o grid
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr))
+        → cria colunas que se adaptam: mínimo 220px, máximo proporcional.
+        Se não couber 2 colunas, vira 1. RESPONSIVO automaticamente!
+      gap: 1rem → espaço entre as células
+    */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+
+
+    /* ─── LISTAS CUSTOMIZADAS ───────────────────────────────────────── */
+    /*
+      list-style: none → remove os bullets/números padrão do navegador
+    */
+    .custom-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column; /* Empilha itens verticalmente */
+      gap: 0.6rem;
+    }
+
+    .custom-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.95rem;
+      color: var(--text-main);
+    }
+
+    /* Cada número/bullet do item da lista */
+    .list-num {
+      font-family: var(--font-title);
+      font-size: 0.75rem;
+      color: var(--accent-green);
+      background: rgba(46, 203, 130, 0.1);
+      border-radius: 50%;
+      width: 1.6rem;
+      height: 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0; /* Não encolhe quando o texto é longo */
+    }
+
+    .list-dot {
+      font-size: 0.5rem;
+      color: var(--accent-violet);
+      background: rgba(176, 110, 243, 0.15);
+      border-radius: 50%;
+      width: 1.6rem;
+      height: 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* Texto no final da lista (os comentários da Victoria) */
+    .list-note {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-style: italic;
+      padding: 0.5rem 0.75rem;
+      border-left: 2px solid var(--accent-green);
+      margin-top: 0.5rem;
+      opacity: 0.8;
+    }
+
+
+    /* ─── TAGS / CHIPS ──────────────────────────────────────────────── */
+    /*
+      Tags são pequenas cápsulas de texto. Ótimas para categorias.
+      display: flex + flex-wrap: wrap → os itens se ajustam e quebram linha
+    */
+    .tags-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tag {
+      font-size: 0.8rem;
+      padding: 0.3rem 0.85rem;
+      border-radius: 2rem;  /* Cápsula */
+      border: 1px solid;
+      transition: background 0.2s ease;
+    }
+
+    .tag-green {
+      color: var(--accent-green);
+      border-color: rgba(46, 203, 130, 0.3);
+      background: rgba(46, 203, 130, 0.08);
+    }
+    .tag-violet {
+      color: var(--accent-violet);
+      border-color: rgba(176, 110, 243, 0.3);
+      background: rgba(176, 110, 243, 0.08);
+    }
+    .tag-pink {
+      color: var(--accent-pink);
+      border-color: rgba(240, 127, 192, 0.3);
+      background: rgba(240, 127, 192, 0.08);
+    }
+
+    .tag:hover {
+      background: rgba(255,255,255,0.08);
+    }
+
+
+    /* ─── SEÇÃO PESSOAL / ABOUT ─────────────────────────────────────── */
+    .about-card {
+      background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card-2) 100%);
+      border: 1px solid rgba(176, 110, 243, 0.2);
+      border-radius: 1rem;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden; /* Esconde o que sai das bordas */
+    }
+
+    /* Decoração de canto */
+    .about-card::after {
+      content: '★';
+      position: absolute;
+      bottom: 1rem;
+      right: 1.5rem;
+      font-size: 5rem;
+      color: var(--accent-violet);
+      opacity: 0.04;
+      line-height: 1;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+
+    .about-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .about-item .label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+    }
+
+    .about-item .value {
+      font-size: 1rem;
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    .about-item .value.accent-green { color: var(--accent-green); }
+    .about-item .value.accent-violet { color: var(--accent-violet); }
+    .about-item .value.accent-pink   { color: var(--accent-pink); }
+
+
+    /* ─── QUOTE (citação de destaque) ───────────────────────────────── */
+    .quote-block {
+      border-left: 3px solid var(--accent-pink);
+      padding: 0.75rem 1.25rem;
+      font-style: italic;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin: 1.25rem 0;
+      background: rgba(240, 127, 192, 0.04);
+      border-radius: 0 0.5rem 0.5rem 0;
+    }
+
+
+    /* ─── FOOTER ────────────────────────────────────────────────────── */
+    /*
+      <footer> = rodapé. Elemento semântico HTML5.
+      margin-top: auto em contexto flex ou apenas padding grande funciona.
+    */
+    .site-footer {
+      padding: 3rem 0 4rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .site-footer::before {
+      content: '';
+      display: block;
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 2rem;
+    }
+
+    .footer-heart {
+      color: var(--accent-pink);
+    }
+
+
+    /* ─── MEDIA QUERIES (responsividade) ────────────────────────────── */
+    /*
+      @media = regra condicional do CSS.
+      Os estilos dentro dela SÓ se aplicam quando a condição é verdadeira.
+
+      max-width: 600px → aplica quando a tela tiver ATÉ 600px de largura
+      (= a maioria dos celulares)
+
+      Isso é o coração do RESPONSIVE DESIGN!
+    */
+    @media (max-width: 600px) {
+      .site-header {
+        padding: 3rem 0 2rem;
+      }
+
+      /* Em telas pequenas, forçamos uma coluna */
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .card {
+        padding: 1.25rem;
+      }
+    }
+
+
+    /* ─── ANIMAÇÃO DE ENTRADA ───────────────────────────────────────── */
+    /*
+      As seções "entram" com fade-in quando a página carrega.
+      animation-fill-mode: both → mantém o estado inicial antes de começar
+      animation-delay → cada seção começa um pouco depois da anterior
+    */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .fade-in:nth-child(1) { animation-delay: 0.1s; }
+    .fade-in:nth-child(2) { animation-delay: 0.2s; }
+    .fade-in:nth-child(3) { animation-delay: 0.3s; }
+    .fade-in:nth-child(4) { animation-delay: 0.4s; }
+    .fade-in:nth-child(5) { animation-delay: 0.5s; }
+
+  </style>
+</head>
+
+<body>
+
+  <!--
+    =====================================================================
+    O QUE É O <body>?
+    Tudo que aparece na página está aqui.
+    Boa prática: use elementos SEMÂNTICOS (header, main, section, footer)
+    em vez de só divs. Isso melhora acessibilidade e SEO.
+    =====================================================================
+  -->
+
+  <!-- Textura de ruído sobre toda a página -->
+  <div class="noise-overlay"></div>
+
+  <!-- Luzes de fundo decorativas -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+
+  <!-- ═══ HEADER ═══════════════════════════════════════════════════════ -->
+  <!--
+    <header> = cabeçalho da página.
+    .container = div que centraliza o conteúdo e limita a largura máxima.
+  -->
+  <header class="site-header">
+    <div class="container">
+
+      <!-- Foto de perfil com anel animado -->
+      <div class="avatar-wrap">
+        <!--
+          Se você tiver a imagem, substitua o emoji pela tag img:
+          <img src="imagens/sua-foto.png" alt="Victoria Cristina">
+          
+          object-fit: cover  → preenche o espaço sem distorcer
+          alt = texto alternativo para acessibilidade (leitores de tela)
+        -->
+        <div class="avatar-placeholder">🎨</div>
+      </div>
+
+      <!--
+        <h1> = título mais importante da página. Use apenas UM por página.
+        <span> = tag inline (em linha), usada para estilizar PARTE de um texto.
+      -->
+      <h1>
+        Blog de<br>
+        <span class="highlight">Victoria Cristina</span>
+      </h1>
+
+      <!--
+        <p> = parágrafo. Bloco de texto.
+        .tagline = nome de classe que criamos no CSS para estilizar.
+      -->
+      <p class="tagline">artista · mangá · música · etc</p>
+
+    </div>
+  </header>
+
+
+  <!-- ═══ MAIN ══════════════════════════════════════════════════════════ -->
+  <!--
+    <main> = conteúdo principal da página. Só deve existir um.
+    Ajuda tecnologias assistivas a pular direto pro conteúdo.
+  -->
+  <main>
+    <div class="container">
+
+
+      <!-- ── ÁUDIO ──────────────────────────────────────────────────── -->
+      <!--
+        <section> = seção temática. Elemento semântico HTML5.
+        Agrupa conteúdo relacionado com significado.
+      -->
+      <section class="audio-section fade-in">
+        <div class="audio-player-wrap">
+          <span class="audio-icon">♪</span>
+          <span>tocando agora:</span>
+          <!--
+            <audio controls> → mostra os controles de play/pause/volume
+            autoplay         → toca automático (alguns navegadores bloqueiam)
+            loop             → repete quando termina
+            Para funcionar: coloque o arquivo .mp3 na mesma pasta que o HTML
+          -->
+          <audio controls loop>
+            <source src="João e Maria -Chico Buarque • LYRICS • [Fxu-pE74m5A].mp3" type="audio/mpeg">
+            Seu navegador não suporta áudio.
+          </audio>
+        </div>
+      </section>
+
+
+      <!-- ── MÚSICAS ─────────────────────────────────────────────────── -->
+      <section class="section fade-in">
+
+        <!--
+          .section-title = classe que estiliza o título de cada seção.
+          A linha decorativa depois do texto vem do ::after no CSS.
+        -->
+        <h2 class="section-title">♬ Meu gosto musical</h2>
+
+        <!--
+          .card = nossa div estilizada como cartão.
+          Podemos usar classes combinadas: class="card cards-grid"
+        -->
+        <div class="card">
+          <!--
+            <ol> = Ordered List (lista ordenada — com números)
+            <ul> = Unordered List (lista sem ordem — com bullets)
+            Removemos o estilo padrão via CSS e criamos o nosso.
+          -->
+          <ol class="custom-list">
+            <li>
+              <span class="list-num">1</span>
+              Radiohead
+            </li>
+            <li>
+              <span class="list-num">2</span>
+              Queen
+            </li>
+            <li>
+              <span class="list-num">3</span>
+              Ado
+            </li>
+            <li>
+              <span class="list-num">4</span>
+              Chico Buarque
+            </li>
+            <li>
+              <span class="list-num">5</span>
+              Pitty
+            </li>
+          </ol>
+
+          <!-- Citação estilizada em vez de texto solto fora da lista -->
+          <p class="list-note">eu gosto de muita coisa diferente, não caberia numa lista ✦</p>
+        </div>
+      </section>
+
+
+      <!-- ── COMIDA ──────────────────────────────────────────────────── -->
+      <section class="section fade-in">
+        <h2 class="section-title">🍕 Comidas que eu amo</h2>
+
+        <!--
+          Aqui usamos cards em grid para uma aparência diferente.
+          Cada alimento vira um mini-card.
+        -->
+        <div class="cards-grid">
+
+          <div class="card" style="text-align:center; padding: 1.25rem;">
+            <div style="font-size:2rem; margin-bottom:0.5rem;">🍕</div>
+            <div style="font-weight:500;">Pizza</div>
+          </div>
+
+          <div class="card" style="text-align:center; padding: 1.25rem;">
+            <div style="font-size:2rem; margin-bottom:0.5rem;">🥗</div>
+            <div style="font-weight:500;">Salada</div>
+          </div>
+
+          <div class="card" style="text-align:center; padding: 1.25rem;">
+            <div style="font-size:2rem; margin-bottom:0.5rem;">🌮</div>
+            <div style="font-weight:500;">"Podrão"</div>
+          </div>
+
+          <div class="card" style="text-align:center; padding: 1.25rem;">
+            <div style="font-size:2rem; margin-bottom:0.5rem;">🍜</div>
+            <div style="font-weight:500;">Yakissoba</div>
+          </div>
+
+        </div>
+
+        <!-- Observação sobre sushi em destaque -->
+        <div class="quote-block" style="margin-top:1rem;">
+          Não consigo comer sushi, mas AMO yakissoba 🍜
+        </div>
+
+        <div style="margin-top:1rem;">
+          <div class="list-note">Praticamente tudo que é bom ✦</div>
+        </div>
+      </section>
+
+
+      <!-- ── MANGÁ ───────────────────────────────────────────────────── -->
+      <section class="section fade-in">
+        <h2 class="section-title">📚 Mangá que curto</h2>
+
+        <div class="card">
+          <!--
+            Tags/chips são ótimas para categorias.
+            Usamos display:flex + flex-wrap:wrap para quebrarem em múltiplas linhas.
+          -->
+          <div class="tags-wrap">
+            <span class="tag tag-pink">GL ♀♀</span>
+            <span class="tag tag-violet">Psicológico</span>
+            <span class="tag tag-green">Drama</span>
+            <span class="tag tag-pink">Comédia</span>
+            <span class="tag tag-violet">Romance</span>
+            <span class="tag tag-green">Comédia Romântica</span>
+            <span class="tag tag-pink">E muito mais...</span>
+          </div>
+
+          <p class="list-note" style="margin-top:1rem;">praticamente tudo que é GL — esse é o meu fraco ✦</p>
+        </div>
+      </section>
+
+
+      <!-- ── SOBRE MIM ───────────────────────────────────────────────── -->
+      <section class="section fade-in">
+        <h2 class="section-title">✦ Detalhes pessoais</h2>
+
+        <!--
+          Seção "about" com grid de informações.
+          Cada .about-item mostra uma label e um valor.
+        -->
+        <div class="about-card">
+          <div class="about-grid">
+
+            <div class="about-item">
+              <span class="label">Idade</span>
+              <span class="value accent-green">17 anos</span>
+            </div>
+
+            <div class="about-item">
+              <span class="label">Identidade</span>
+              <span class="value accent-violet">Mulher 🏳️‍🌈</span>
+            </div>
+
+            <div class="about-item">
+              <span class="label">Profissão</span>
+              <span class="value accent-pink">Artista 🎨</span>
+            </div>
+
+            <div class="about-item">
+              <span class="label">Inglês</span>
+              <span class="value accent-green">I know english (i think) 😄</span>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+
+    </div> <!-- /container -->
+  </main>
+
+
+  <!-- ═══ FOOTER ════════════════════════════════════════════════════════ -->
+  <!--
+    <footer> = rodapé. Elemento semântico HTML5.
+    Bom para colocar: créditos, copyright, links, contato.
+  -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>feito com <span class="footer-heart">♥</span> por Victoria Cristina &nbsp;·&nbsp; 2026</p>
+      <p style="margin-top:0.5rem; opacity:0.5;">construído com HTML puro & CSS</p>
+    </div>
+  </footer>
+
+
+</body>
+</html>

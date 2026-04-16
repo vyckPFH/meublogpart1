@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog da Victoria Cristina</title>
+
+  <!-- 
+    GOOGLE FONTS: fontes gratuitas do Google carregadas pela internet.
+    O "link" abaixo baixa duas fontes antes da página abrir:
+    - Playfair Display: fonte elegante com serifa (aquelas pontinhas nas letras)
+    - Poppins: fonte moderna e arredondada, fácil de ler
+    Depois usamos elas no CSS com: font-family: 'Playfair Display', serif;
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+
+    /* ============================================================
+       O QUE É CSS?
+       CSS é a linguagem que "pinta e decora" o HTML.
+       O HTML monta a estrutura (paredes, teto...) e o CSS 
+       coloca a cor, mobília, iluminação.
+
+       Como funciona:
+         seletor { propriedade: valor; }
+
+       O SELETOR diz QUEM vai ser estilizado.
+       A PROPRIEDADE diz O QUE vai mudar.
+       O VALOR diz COMO vai ficar.
+
+       Exemplo: 
+         h1 { color: red; }
+         ↑       ↑        ↑
+       seletor  prop    valor
+    ============================================================ */
+
+
+    /* 
+      O ASTERISCO (*) seleciona TODOS os elementos da página.
+      Usamos aqui para fazer um "reset": zerar margens e espaçamentos
+      que o navegador coloca automaticamente (cada navegador coloca
+      valores diferentes, o que bagunça o layout).
+      
+      box-sizing: border-box → faz com que o padding NÃO aumente 
+      o tamanho da caixa. Sem isso, um elemento de width:200px com 
+      padding:20px ficaria com 240px. Com border-box, continua 200px.
+    */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+
+    /* 
+      BODY = o corpo inteiro da página.
+      Aqui definimos as configurações padrão que valem para tudo.
+      
+      background-color: cor de fundo da página inteira
+      color: cor padrão de TODO o texto (podemos mudar por elemento depois)
+      font-family: a fonte padrão de todo o texto
+      line-height: espaço entre as linhas de texto (1.7 = 170% do tamanho da fonte)
+    */
+    body {
+      background-color: #0f0f1a;
+      color: #e0e0f0;
+      font-family: 'Poppins', sans-serif;
+      line-height: 1.7;
+    }
+
+
+    /* 
+      .container é uma DIV que usamos para centralizar o conteúdo.
+      
+      O PONTO (.) na frente significa que é uma CLASS (classe).
+      Classes são "apelidos" que damos a elementos para estilizá-los.
+      No HTML escrevemos: <div class="container">
+      No CSS selecionamos com: .container { ... }
+      
+      max-width: o elemento cresce até no máximo 800px. Se a tela for menor,
+                 ele se ajusta à tela. Ótimo para celular!
+      margin: 0 auto → 0 em cima/baixo, "automático" nas laterais.
+                        O "auto" nas laterais centraliza o elemento.
+      padding: 0 20px → 0 em cima/baixo, 20px nas laterais.
+                         Isso cria um "respiro" nas bordas em telas pequenas.
+    */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+
+    /* ─────────────────────────────────────
+       HEADER (cabeçalho no topo da página)
+    ───────────────────────────────────── */
+
+    /* 
+      <header> é uma tag HTML5 semântica: diz que aquele bloco
+      É o cabeçalho da página. Funciona igual uma div, mas 
+      é mais descritivo e ajuda na acessibilidade.
+      
+      padding: espaçamento INTERNO (entre o conteúdo e a borda).
+      Aqui: 60px em cima e embaixo, 20px nas laterais.
+      text-align: center → centraliza todo o texto dentro do header.
+      border-bottom: cria uma linha embaixo do header.
+        1px = espessura | solid = estilo (sólida) | #2a2a4a = cor
+    */
+    header {
+      padding: 60px 20px 40px 20px;
+      text-align: center;
+      border-bottom: 1px solid #2a2a4a;
+    }
+
+
+    /* 
+      A FOTO DE PERFIL
+      
+      Colocamos a foto dentro de uma div com class="foto-perfil"
+      para poder estilizá-la separadamente.
+      
+      width e height: tamanho fixo de 140x140 pixels
+      border-radius: arredonda os cantos. 50% = círculo perfeito!
+      object-fit: cover → a imagem preenche o espaço sem distorcer
+                          (como um "zoom centralizado")
+      border: 3px solid #3eb87a → borda verde ao redor da foto
+      display: block → imagens são inline por padrão (ficam em linha
+                        com texto). Block faz ela se comportar como parágrafo.
+      margin: 0 auto 20px auto → centraliza e coloca 20px embaixo
+    */
+    .foto-perfil {
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      object-fit: cover; 
+      border: 3px solid #3eb87a;
+      display: block;
+      margin: 0 auto 20px auto;
+      
+    }
+
+    /* Quando não tem foto, usamos um emoji numa div circular */
+    .foto-placeholder {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background-color: #1e1e35;
+      border: 3px solid #3eb87a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 56px;
+      margin: 0 auto 20px auto;
+    }
+
+
+    /* 
+      O TÍTULO PRINCIPAL (h1)
+      
+      font-family: usamos a Playfair Display aqui, que é mais elegante
+      font-size: tamanho da fonte em pixels
+      font-weight: espessura da fonte (400=normal, 700=negrito, 900=extra negrito)
+      color: cor do texto
+      margin-bottom: espaço embaixo do elemento
+    */
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 42px;
+      font-weight: 900;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    /* 
+      .nome-destaque é um <span> dentro do h1.
+      <span> é uma tag inline para estilizar PARTE de um texto.
+      
+      Aqui damos uma cor diferente só para o nome.
+    */
+    .nome-destaque {
+      color: #3eb87a;
+    }
+
+    /* Subtítulo em itálico com cor mais apagada */
+    .tagline {
+      color: #6b6b8e;
+      font-size: 14px;
+      font-style: italic;
+      margin-top: 8px;
+    }
+
+
+    /* ─────────────────────────────────────
+       PLAYER DE MÚSICA
+    ───────────────────────────────────── */
+
+    /* 
+      Envolvemos o <audio> numa div para poder centralizá-lo
+      e decorá-lo com fundo e bordas.
+      
+      display: flex → ativa o Flexbox, sistema de layout moderno.
+        Flexbox organiza os filhos em linha ou coluna, com alinhamento fácil.
+      align-items: center → alinha os itens no centro verticalmente
+      justify-content: center → alinha os itens no centro horizontalmente
+      gap: 10px → espaço entre os itens dentro do flex
+      
+      background-color: cor de fundo
+      border-radius: 30px → cantos muito arredondados (formato "pílula")
+      padding: 12px 20px → respiro interno
+      margin: 25px auto → centraliza e coloca espaço em cima/baixo
+      width: fit-content → a div tem só o tamanho necessário para o conteúdo
+    */
+    .audio-player {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background-color: #1a1a2e;
+      border-radius: 30px;
+      padding: 12px 20px;
+      margin: 25px auto;
+      width: fit-content;
+      border: 1px solid #2a2a50;
+    }
+
+    .audio-label {
+      font-size: 13px;
+      color: #6b6b8e;
+    }
+
+    /* Ícone de nota musical animado */
+    .icone-musica {
+      color: #3eb87a;
+      font-size: 18px;
+      /* 
+        animation: nome duração tipo repeat
+        Isso chama a animação @keyframes que definimos mais abaixo.
+      */
+      animation: piscar 1.8s ease-in-out infinite;
+    }
+
+    /* 
+      @keyframes define UMA ANIMAÇÃO passo a passo.
+      "piscar" é o nome que demos (poderia ser qualquer nome).
+      "from" = estado inicial, "to" = estado final.
+      O navegador cria o movimento automático entre os dois.
+      
+      opacity: 1 = visível, 0.3 = quase transparente
+    */
+    @keyframes piscar {
+      from { opacity: 1; }
+      to   { opacity: 0.3; }
+    }
+
+
+    /* ─────────────────────────────────────
+       CONTEÚDO PRINCIPAL
+    ───────────────────────────────────── */
+
+    /* 
+      <main> é outra tag semântica HTML5.
+      Indica o conteúdo PRINCIPAL da página.
+      
+      padding: espaço interno (40px em cima/baixo, 0 nas laterais)
+    */
+    main {
+      padding: 40px 0;
+    }
+
+
+    /* 
+      SEÇÃO = blocos de conteúdo.
+      margin-bottom: espaço abaixo de cada seção (separa uma da outra)
+    */
+    .secao {
+      margin-bottom: 40px;
+    }
+
+
+    /* 
+      TÍTULO DE SEÇÃO (os h2 de cada bloco)
+      
+      font-family: Playfair Display para os títulos
+      font-size: 20px
+      color: verde
+      margin-bottom: espaço abaixo do título
+      display: flex → para poder colocar a linha decorativa do lado
+      align-items: center → alinha o texto e a linha verticalmente
+      gap: 12px → espaço entre o texto e a linha
+    */
+    .titulo-secao {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      color: #3eb87a;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* 
+      A LINHA depois do título.
+      É uma <span> vazia que cresce para preencher o espaço.
+      
+      display: block → precisa disso para ter altura
+      height: 1px → linha fina
+      background-color: cor da linha
+      flex: 1 → ocupa TODO o espaço que sobrar ao lado do texto
+    */
+    .linha-titulo {
+      display: block;
+      height: 1px;
+      background-color: #2a2a4a;
+      flex: 1;
+    }
+
+
+    /* 
+      CARD = caixinha com fundo, borda e cantos arredondados.
+      É um dos padrões mais usados em design de sites.
+      
+      background-color: fundo do card (um pouco mais claro que a página)
+      border: borda fina
+      border-radius: 12px → cantos arredondados (quanto maior, mais redondo)
+      padding: espaço interno entre o conteúdo e as bordas do card
+    */
+    .card {
+      background-color: #13131f;
+      border: 1px solid #2a2a4a;
+      border-radius: 12px;
+      padding: 24px;
+    }
+
+
+    /* 
+      GRID DE CARDS PEQUENOS (para a seção de comida)
+      
+      display: grid → ativa o CSS Grid, sistema de layout em grade
+      
+      grid-template-columns: repeat(2, 1fr)
+        → cria 2 colunas de tamanho igual (1fr = "1 fração" do espaço total)
+        
+      gap: 12px → espaço entre as células da grade
+    */
+    .grade-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    /* Card menor para os ícones de comida */
+    .card-comida {
+      background-color: #13131f;
+      border: 1px solid #2a2a4a;
+      border-radius: 12px;
+      padding: 20px 12px;
+      text-align: center;
+      font-size: 14px;
+      /* 
+        transition: propriedade duração estilo
+        "all" = qualquer propriedade que mudar vai ser animada suavemente
+        0.2s = duração de 0.2 segundos
+        ease = começa rápido e desacelera no final
+      */
+      transition: all 0.2s ease;
+    }
+
+    .card-comida .emoji {
+      font-size: 32px;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    /* 
+      :hover → aplica estilo quando o mouse passa por cima do elemento.
+      A transição no .card-comida faz a mudança ser suave (não brusca).
+    */
+    .card-comida:hover {
+      background-color: #1c1c30;
+      border-color: #3eb87a;
+    }
+
+
+    /* ─────────────────────────────────────
+       LISTAS
+    ───────────────────────────────────── */
+
+    /* 
+      list-style: none → remove os bullets (bolinhas) ou números
+                         padrão do navegador
+    */
+    .lista-custom {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .lista-custom li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 15px;
+    }
+
+    .num {
+      background-color: #1e2e26;
+      color: #3eb87a;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    .observacao {
+      font-size: 13px;
+      color: #6b6b8e;
+      font-style: italic;
+      padding: 8px 12px;
+      border-left: 2px solid #3eb87a;
+      margin-top: 12px;
+    }
+
+
+    /* ─────────────────────────────────────
+       TAGS (cápsulas de texto para categorias)
+    ───────────────────────────────────── */
+
+    /* 
+      flex-wrap: wrap → quando não cabe mais na linha, quebra para a próxima.
+    */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      font-size: 13px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: 1px solid;
+    }
+
+    .tag-verde {
+      color: #3eb87a;
+      border-color: #2a5040;
+      background-color: #0f2018;
+    }
+
+    .tag-roxo {
+      color: #b06ef3;
+      border-color: #4a2a70;
+      background-color: #1a0f2a;
+    }
+
+    .tag-rosa {
+      color: #f07fc0;
+      border-color: #6a2a50;
+      background-color: #200f18;
+    }
+
+
+    /* ─────────────────────────────────────
+       SEÇÃO SOBRE MIM
+    ───────────────────────────────────── */
+
+    .grade-sobre {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .item-sobre {
+      background-color: #13131f;
+      border: 1px solid #2a2a4a;
+      border-radius: 10px;
+      padding: 16px;
+    }
+
+    .item-sobre .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #6b6b8e;
+      margin-bottom: 4px;
+    }
+
+    .item-sobre .valor {
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .verde  { color: #3eb87a; }
+    .roxo   { color: #b06ef3; }
+    .rosa   { color: #f07fc0; }
+
+
+    /* ─────────────────────────────────────
+       CITAÇÃO EM DESTAQUE
+    ───────────────────────────────────── */
+    .citacao {
+      border-left: 3px solid #f07fc0;
+      padding: 10px 16px;
+      font-style: italic;
+      color: #9a9ab0;
+      font-size: 14px;
+      background-color: #160f12;
+      border-radius: 0 8px 8px 0;
+      margin-top: 12px;
+    }
+
+
+    /* ─────────────────────────────────────
+       FOOTER (rodapé)
+    ───────────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 30px 20px 50px 20px;
+      color: #4a4a6a;
+      font-size: 13px;
+      border-top: 1px solid #2a2a4a;
+      margin-top: 20px;
+    }
+
+    .coracao {
+      color: #f07fc0;
+    }
+
+
+    /* ─────────────────────────────────────
+       RESPONSIVIDADE — MEDIA QUERIES
+    ───────────────────────────────────── */
+
+    /* 
+      @media é uma "pergunta" pro navegador:
+      "a tela tem no máximo 500px de largura?"
+      Se sim, aplica os estilos dentro das chaves.
+      
+      Isso é o que torna o site responsivo para celular!
+      
+      Escrevemos as media queries no FINAL do CSS
+      para sobrescrever os estilos anteriores.
+    */
+    @media (max-width: 500px) {
+
+      header h1 {
+        font-size: 28px;
+      }
+
+      .grade-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .grade-sobre {
+        grid-template-columns: 1fr 1fr;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- ════════════════════════════════
+       HEADER — topo da página
+  ════════════════════════════════ -->
+
+  <!--
+    <header> é uma tag HTML5 semântica.
+    "Semântico" significa que a tag TEM SIGNIFICADO além de estrutura.
+    Ao ver <header>, qualquer pessoa (ou robô do Google) sabe que 
+    é o cabeçalho. É mais claro do que usar só <div>.
+
+    Outros elementos semânticos: <main>, <section>, <footer>, <nav>, <article>
+  -->
+  <header>
+
+    <div class="container">
+
+      <!-- 
+        Para usar sua foto, troque o div.foto-placeholder por:
+        
+        
+        O atributo alt = texto alternativo. Aparece se a imagem não carregar
+        e é lido por leitores de tela para pessoas com deficiência visual.
+      -->
+      <!-- <div class="foto-placeholder">🎨</div> -->
+      <img class="foto-perfil" src="imagens/Captura de tela de 2026-03-06 11-09-11.png" alt="Victoria Cristina">
+
+
+      <!--
+        <h1> = título mais importante da página.
+        Use apenas UM h1 por página (boas práticas de SEO e acessibilidade).
+        
+        <span> = tag inline. Não quebra linha, só agrupa parte de um texto.
+        Aqui usamos para mudar a cor do nome separadamente.
+      -->
+      <h1>
+        Blog de <span class="nome-destaque">Victoria Cristina</span>
+      </h1>
+
+      <!-- <p> = parágrafo. Bloco de texto. -->
+      <p class="tagline">artista · mangá · música · e mais</p>
+
+      <!-- Player de áudio -->
+      <div class="audio-player">
+        <span class="icone-musica">♪</span>
+        <span class="audio-label">tocando agora:</span>
+        <!--
+          <audio> toca arquivos de áudio.
+          controls → mostra os botões de play/pause/volume
+          loop     → repete quando termina
+        -->
+        <audio controls loop>
+          <source src="João e Maria -Chico Buarque • LYRICS • [Fxu-pE74m5A].mp3" type="audio/mpeg">
+          Seu navegador não suporta áudio.
+        </audio>
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- ════════════════════════════════
+       MAIN — conteúdo principal
+  ════════════════════════════════ -->
+  <main>
+    <div class="container">
+
+
+      <!-- ── MÚSICAS ────────────────────────── -->
+      <section class="secao">
+
+        <h2 class="titulo-secao">
+          ♬ Meu gosto musical
+          <span class="linha-titulo"></span>
+        </h2>
+
+        <div class="card">
+
+          <!--
+            <ol> = lista COM NÚMEROS
+            <ul> = lista SEM NÚMEROS
+            <li> = cada item da lista
+            Removemos o estilo padrão via CSS e criamos o nosso.
+          -->
+          <ol class="lista-custom">
+            <li><span class="num">1</span> Radiohead</li>
+            <li><span class="num">2</span> Queen</li>
+            <li><span class="num">3</span> Ado</li>
+            <li><span class="num">4</span> Chico Buarque</li>
+            <li><span class="num">5</span> Pitty</li>
+          </ol>
+
+          <p class="observacao">eu gosto de muita coisa diferente, não caberia numa lista ✦</p>
+
+        </div>
+
+      </section>
+
+
+      <!-- ── COMIDA ─────────────────────────── -->
+      <section class="secao">
+
+        <h2 class="titulo-secao">
+          🍕 Comidas que eu amo
+          <span class="linha-titulo"></span>
+        </h2>
+
+        <div class="grade-2">
+          <div class="card-comida"><span class="emoji">🍕</span>Pizza</div>
+          <div class="card-comida"><span class="emoji">🥗</span>Salada</div>
+          <div class="card-comida"><span class="emoji">🌮</span>"Podrão"</div>
+          <div class="card-comida"><span class="emoji">🍜</span>Yakissoba</div>
+        </div>
+
+        <p class="citacao">Não consigo comer sushi, mas AMO yakissoba 🍜</p>
+        <p class="observacao" style="margin-top: 10px;">Praticamente tudo que é bom ✦</p>
+
+      </section>
+
+
+      <!-- ── MANGÁ ──────────────────────────── -->
+      <section class="secao">
+
+        <h2 class="titulo-secao">
+          📚 Mangá que curto
+          <span class="linha-titulo"></span>
+        </h2>
+
+        <div class="card">
+          <div class="tags">
+            <span class="tag tag-rosa">GL ♀♀</span>
+            <span class="tag tag-roxo">Psicológico</span>
+            <span class="tag tag-verde">Drama</span>
+            <span class="tag tag-rosa">Comédia</span>
+            <span class="tag tag-roxo">Romance</span>
+            <span class="tag tag-verde">Comédia Romântica</span>
+            <span class="tag tag-rosa">E muito mais...</span>
+          </div>
+          <p class="observacao" style="margin-top: 14px;">praticamente tudo que é GL — meu maior fraco ✦</p>
+        </div>
+
+      </section>
+
+
+      <!-- ── SOBRE MIM ──────────────────────── -->
+      <section class="secao">
+
+        <h2 class="titulo-secao">
+          ✦ Sobre mim
+          <span class="linha-titulo"></span>
+        </h2>
+
+        <div class="grade-sobre">
+          <div class="item-sobre">
+            <p class="label">Idade</p>
+            <p class="valor verde">17 anos</p>
+          </div>
+          <div class="item-sobre">
+            <p class="label">Identidade</p>
+            <p class="valor roxo">Mulher 🏳️‍🌈</p>
+          </div>
+          <div class="item-sobre">
+            <p class="label">Profissão</p>
+            <p class="valor rosa">Artista 🎨</p>
+          </div>
+          <div class="item-sobre">
+            <p class="label">Inglês</p>
+            <p class="valor verde">I know english (i think) 😄</p>
+          </div>
+        </div>
+
+      </section>
+
+
+    </div>
+  </main>
+
+
+  <!-- ════════════════════════════════
+       FOOTER — rodapé
+  ════════════════════════════════ -->
+  <footer>
+    <div class="container">
+      <p>feito com <span class="coracao">♥</span> por Victoria Cristina · 2026</p>
+    </div>
+  </footer>
+
+
+</body>
+</html>
